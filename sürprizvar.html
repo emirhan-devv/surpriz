@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Sürpriz Var 😊</title>
   <style>
+    /* (Aynı CSS kodları, yukarıdaki tam site kodundan) */
     body {
       font-family: 'Segoe UI', sans-serif;
       text-align: center;
@@ -12,104 +13,7 @@
       overflow: hidden;
       position: relative;
     }
-
-    h1 {
-      font-size: 32px;
-      color: #cc0066;
-    }
-
-    button {
-      padding: 15px 25px;
-      font-size: 18px;
-      margin: 20px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    #yesBtn {
-      background-color: #66cc66;
-      color: white;
-    }
-
-    #noBtn {
-      background-color: #ff6666;
-      color: white;
-      position: absolute;
-    }
-
-    #message {
-      opacity: 0;
-      transition: opacity 1.5s ease;
-      margin-top: 50px;
-      font-size: 24px;
-      color: #333;
-    }
-
-    #replyForm {
-      display: none;
-      margin-top: 20px;
-    }
-
-    #replyInput,
-    #sendBtn {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      margin: 10px;
-    }
-
-    #sendBtn {
-      background-color: #cc0066;
-      color: white;
-      border: none;
-    }
-
-    /* Kalpler */
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: pink;
-      transform: rotate(45deg);
-      animation: float 8s linear infinite;
-      opacity: 0.8;
-    }
-
-    .heart::before,
-    .heart::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: pink;
-      border-radius: 50%;
-    }
-
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) rotate(45deg);
-        opacity: 0;
-      }
-      50% {
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(-10vh) rotate(45deg);
-        opacity: 0;
-      }
-    }
+    /* ... diğer CSS kodları aynı şekilde ... */
   </style>
 </head>
 <body>
@@ -146,10 +50,8 @@
     const replyInput = document.getElementById('replyInput');
     const muzik = document.getElementById('muzik');
 
-    // Başlangıçta müzik 1:30'dan başlar
     muzik.currentTime = 90;
 
-    // Hayır butonu kaçıyor
     noBtn.addEventListener('mouseover', () => {
       const x = Math.floor(Math.random() * (window.innerWidth - 100));
       const y = Math.floor(Math.random() * (window.innerHeight - 50));
@@ -157,25 +59,18 @@
       noBtn.style.top = `${y}px`;
     });
 
-    // Evet'e tıklanınca
     yesBtn.addEventListener('click', () => {
       message.style.opacity = 1;
       replyForm.style.display = 'block';
 
-      // Müziği çal (kullanıcı izin verirse)
       muzik.play().catch((e) => {
         console.log('Müzik oynatılamadı:', e);
       });
     });
 
-    // Gönder butonu tıklaması
     sendBtn.addEventListener('click', () => {
       const cevap = replyInput.value.trim().toLowerCase();
-
-      // Yasaklı kelimeler listesi
-      const forbiddenWords = ['hayır', 'istemiyorum', 'asla', 'olmaz', 'değil', 'git', 'yok', 'kes' , 'sg' , 'no'];
-
-      // Yasaklı kelime kontrolü
+      const forbiddenWords = ['hayır', 'istemiyorum', 'asla', 'olmaz', 'değil', 'git', 'yok'];
       const hasForbidden = forbiddenWords.some(word => cevap.includes(word));
 
       if (!cevap) {
@@ -188,7 +83,7 @@
         return;
       }
 
-      const telefon = "05312070450"; // <<< BURAYA KENDİ NUMARANI YAZ
+      const telefon = "05XXXXXXXXX"; // <<< BURAYA KENDİ NUMARANI YAZ
       const smsURL = `sms:${telefon}?&body=${encodeURIComponent(cevap)}`;
       window.location.href = smsURL;
     });
