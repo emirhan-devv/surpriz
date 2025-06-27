@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sürpriz Var 😊</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background-color: #ffe6e6;
+      padding-top: 100px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #cc0066;
+    }
+
+    button {
+      padding: 15px 25px;
+      font-size: 18px;
+      margin: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #yesBtn {
+      background-color: #66cc66;
+      color: white;
+    }
+
+    #noBtn {
+      background-color: #ff6666;
+      color: white;
+      position: absolute;
+    }
+
+    #message {
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      margin-top: 50px;
+      font-size: 24px;
+      color: #333;
+    }
+
+    #replyForm {
+      display: none;
+      margin-top: 20px;
+    }
+
+    #replyInput,
+    #sendBtn {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin: 10px;
+    }
+
+    #sendBtn {
+      background-color: #cc0066;
+      color: white;
+      border: none;
+    }
+
+    /* Kalpler */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      transform: rotate(45deg);
+      animation: float 8s linear infinite;
+      opacity: 0.8;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Benimle tanışmak ister misin?</h1>
+  <button id="yesBtn">Evet 💖</button>
+  <button id="noBtn">Hayır ❌</button>
+
+  <div id="message">Müsait olduğunda seninle bir kahve içmek istiyorum ☕</div>
+
+  <div id="replyForm">
+    <input type="text" id="replyInput" placeholder="Cevabını buraya yaz :)" />
+    <button id="sendBtn">Gönder</button>
+  </div>
+
+  <!-- Ses çalar -->
+  <audio id="muzik" preload="auto" src="https://voca.ro/1gr1halP4hVR"></audio>
+
+  <script>
+    // Animasyonlu kalpler
+    for (let i = 0; i < 30; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+      heart.style.width = heart.style.height = (10 + Math.random() * 20) + 'px';
+      document.body.appendChild(heart);
+    }
+
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const message = document.getElementById('message');
+    const replyForm = document.getElementById('replyForm');
+    const sendBtn = document.getElementById('sendBtn');
+    const replyInput = document.getElementById('replyInput');
+    const muzik = document.getElementById('muzik');
+
+    // Başlangıçta müzik 1:30'dan başlar
+    muzik.currentTime = 90;
+
+    // Hayır butonu kaçıyor
+    noBtn.addEventListener('mouseover', () => {
+      const x = Math.floor(Math.random() * (window.innerWidth - 100));
+      const y = Math.floor(Math.random() * (window.innerHeight - 50));
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    });
+
+    // Evet'e tıklanınca
+    yesBtn.addEventListener('click', () => {
+      message.style.opacity = 1;
+      replyForm.style.display = 'block';
+
+      // Müziği çal (kullanıcı izin verirse)
+      muzik.play().catch((e) => {
+        console.log('Müzik oynatılamadı:', e);
+      });
+    });
+
+    // Gönder butonu tıklaması
+    sendBtn.addEventListener('click', () => {
+      const cevap = replyInput.value.trim().toLowerCase();
+
+      // Yasaklı kelimeler listesi
+      const forbiddenWords = ['hayır', 'istemiyorum', 'asla', 'olmaz', 'değil', 'git', 'yok', 'kes' , 'sg' , 'no'];
+
+      // Yasaklı kelime kontrolü
+      const hasForbidden = forbiddenWords.some(word => cevap.includes(word));
+
+      if (!cevap) {
+        alert('Lütfen bir cevap yaz.');
+        return;
+      }
+
+      if (hasForbidden) {
+        alert('Olumsuz kelimeler içeren mesaj gönderilemez.');
+        return;
+      }
+
+      const telefon = "05312070450"; // <<< BURAYA KENDİ NUMARANI YAZ
+      const smsURL = `sms:${telefon}?&body=${encodeURIComponent(cevap)}`;
+      window.location.href = smsURL;
+    });
+  </script>
+</body>
+</html>
